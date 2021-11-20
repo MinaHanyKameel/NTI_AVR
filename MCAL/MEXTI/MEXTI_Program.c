@@ -24,16 +24,19 @@ void __vector_2(void)   __attribute__((signal));
 /*ISR External Interrupt 2 Declaration */
 void __vector_3(void)   __attribute__((signal));
 
-/**
-** External Intrrupt 0 Sense Control
-** ---------------------------------
-**	ISC01 ISC00 Description
-**	--------------------------------------------------------------------
-**	  0     0     The low level of INT0 generates an interrupt request.
-**	  0     1     Any logical change on INT0 generates an interrupt request.
-**	  1     0     The falling edge of INT0 generates an interrupt request.
-**	  1     1     The rising edge of INT0 generates an interrupt request.
- **/
+/******************************/
+/** External Intrrupt 0 Init **/
+/******************************/
+
+/* External Intrrupt 0 Sense Control
+ * ---------------------------------
+ *	ISC01 ISC00 Description
+ *	--------------------------------------------------------------------
+ *	  0     0     The low level of INT0 generates an interrupt request.
+ *	  0     1     Any logical change on INT0 generates an interrupt request.
+ *	  1     0     The falling edge of INT0 generates an interrupt request.
+ *	  1     1     The rising edge of INT0 generates an interrupt request.
+*/
 void MEXTI0_VidInit(void)
 {
 #if MEXTI0_SET_SENSE_CONTROL == MEXTI_LOW_LEVEL
@@ -55,6 +58,10 @@ void MEXTI0_VidInit(void)
 	/* Enable EXTI0*/
 	SET_BIT(GICR,INT0);
 }
+
+/******************************/
+/** External Intrrupt 0 Init **/
+/******************************/
 
 /* Interrupt 1 Sense Control
  * ISC11 ISC10 Description
@@ -86,12 +93,15 @@ void MEXTI1_VidInit(void)
 	SET_BIT(GICR,INT1);
 }
 
-/*
- * Bit 6 – ISC2: Interrupt Sense Control 2
+/******************************/
+/** External Intrrupt 0 Init **/
+/******************************/
+
+/* Bit 6 – ISC2: Interrupt Sense Control 2
  * --------------------------------------------------------------------------
  * If ISC2 is written to zero, a falling edge on INT2 activates the interrupt.
  * If ISC2 is written to one, a rising edge on INT2 activates the interrupt.
- */
+*/
 void MEXTI2_VidInit(void)
 {
 

@@ -8,6 +8,7 @@
 #ifndef MCAL_MGIE_MGIE_PRIVATE_H_
 #define MCAL_MGIE_MGIE_PRIVATE_H_
 
+
 /*Status Register*/
 #define SREG  *((volatile u8*)0x5F)
 

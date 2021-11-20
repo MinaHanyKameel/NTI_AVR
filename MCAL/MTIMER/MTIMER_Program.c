@@ -60,6 +60,20 @@ void MTIMER0_VidInit(void)
 	#error "Timer0 Mode is Not Valid..."
 #endif
 
+/* Bit 0 – TOIE0: Timer/Counter0 Overflow Interrupt Enable
+ * When the TOIE0 bit is written to one, and the I-bit in the Status Register is set (one), the
+ * Timer/Counter0 Overflow interrupt is enabled. The corresponding interrupt is executed if
+ * an overflow in Timer/Counter0 occurs, i.e., when the TOV0 bit is set in the
+ * Timer/Counter Interrupt Flag Register – TIFR.
+* */
+#if TIMER0_SET_OVERFLOW_INTERRUPT == TIMER0_SET_OVERFLOW_INTERRUPT_ENABELED
+	SET_BIT(TIMSK,TOIE0);
+#elif TIMER0_SET_OVERFLOW_INTERRUPT == TIMER0_SET_OVERFLOW_INTERRUPT_DISABLED
+	CLR_BIT(TIMSK,TOIE0);
+#else
+	#error "Timer0 Set OverFlow Interrupt is Not Valid..."
+#endif
+
 /*	Bit 1 – OCIE0: Timer/Counter0 Output Compare Match Interrupt Enable
  * --------------------------------------------------------------------
  * When the OCIE0 bit is written to one, and the I-bit in the Status Register is set (one), the
@@ -68,7 +82,7 @@ void MTIMER0_VidInit(void)
  */
 #if TIMER0_SET_CTC_INTERRUPT == TIMER0_SET_CTC_INTERRUPT_ENABELED
 	SET_BIT(TIMSK,OCIE0);
-#elif TIMER0_SET_CTC_INTERRUPT == TIMER0_SET_CTC_INTERRUPT_DISABELED
+#elif TIMER0_SET_CTC_INTERRUPT == TIMER0_SET_CTC_INTERRUPT_DISABLED
 	CLR_BIT(TIMSK,OCIE0);
 #else
 	#error "Timer0 Set CTC Interrupt is Not Valid..."
