@@ -29,7 +29,7 @@ void HCLCD_VidWriteChar_4Bits(u8 Copy_u8Data);
 void HCLCD_VidWriteCommand_4Bits(u8 Copy_u8Command);
 
 /* Write Multiple Characters */
-void HCLCD_VidWriteString_4Bits(u8* PCopy_u8String);
+void HCLCD_VidWriteString4Bits(u8* PCopy_u8String);
 void HCLCD_VidWriteString_8Bits(u8* PCopy_u8String);
 
 /* Set Position of DDRAM AC */

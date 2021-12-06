@@ -32,7 +32,7 @@ void HStepper_VidForward_Angle_delay (u32 Copy_u32Angle,u16 Copy_u16ForwardSpeed
 	/* (Angle / 1_Step_Angle) */
 	LOC_u32LoopMaximum=((Copy_u32Angle*1000)/(176))/4;
 
-	for( LOC_u8LoopCounter=0;LOC_u8LoopCounter<LOC_u32LoopMaximum;LOC_u8LoopCounter++)
+	for( LOC_u8LoopCounter=0;LOC_u8LoopCounter<=LOC_u32LoopMaximum;LOC_u8LoopCounter++)
 	{
 		MDIO_Error_State_SetPinValue(HSTEPPER_BLUE,MDIO_PORTD,PIN_LOW);
 		MDIO_Error_State_SetPinValue(HSTEPPER_PINK,MDIO_PORTD,PIN_HIGH);

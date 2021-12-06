@@ -4,14 +4,11 @@
 #include"HKPD_Interface.h"
 #include<util/delay.h>
 
-const u8 KPD_u8SwitchVal[4][4]=
-								{
-									{ '7','4','1','C'},
-									{'8','5','2','0'},
-									{'9','6','3','='},
-									{'/','*','-','+'},
-								};
+const u8 KPD_u8SwitchVal[4][4]={{ '7','4','1','C'},{'8','5','2','0'},{'9','6','3','='},{'/','*','-','+'}};
+
+/**********/
 /*KPD INIT*/
+/**********/
 void HKPD_VidInit(void)
 {
 	/* Set Row Pins as an Input */
@@ -40,7 +37,9 @@ void HKPD_VidInit(void)
 	//MDIO_Error_State_SetPinValue(COL_PIN3,COL_PORT,PIN_HIGH);
 }
 
+/*****************/
 /*KPD Get pressed*/
+/*****************/
 u8 HKPD_u8GetKeyPressed(void)
 {
 	u8 LOC_u8RowCount;

@@ -1,3 +1,5 @@
+#ifndef HCLCD_CONFIG_H_
+#define HCLCD_CONFIG_H_
 
 /** Configure Rs, Rw, En Pins --> (PIN0 to PIN7) **/
 #define RS PIN0
@@ -5,10 +7,10 @@
 #define EN PIN2
 
 /** Configure Control Port --> PORTS (A, B , C, D) **/
-#define CONTROL_PORT MDIO_PORTA
+#define CONTROL_PORT MDIO_PORTC
 
 /** Configure Data Port --> PORTS (A, B , C, D) **/
-#define DATA_PORT MDIO_PORTC
+#define DATA_PORT MDIO_PORTD
 
 
 /** Configure Rs, Rw, En Pins --> (PIN0 to PIN7) **/
@@ -30,7 +32,7 @@
 ** 3- FUNCTION_SET_4BITS_2LINES 
 ** 4- FUNCTION_SET_4BITS_1LINES 
 **/
-#define HCLCD_FUNCTION_SET	FUNCTION_SET_4BITS_2LINES
+#define HCLCD_FUNCTION_SET	FUNCTION_SET_8BITS_2LINES
 
 
 /**HCLCD_Display_On_Off
@@ -48,5 +50,6 @@
 ** 3- ENTRY_MODE_SET_DECREASE_WITH_SHIFT
 ** 4- ENTRY_MODE_SET_DECREASE
 **/
-
 #define HCLCD_ENTRY_MODE_SET	ENTRY_MODE_SET_INCREASE
+
+#endif

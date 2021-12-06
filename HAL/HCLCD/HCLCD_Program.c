@@ -19,19 +19,19 @@ void HCLCD_Vid8Bits_Init(void)
 	MDIO_Error_State_SetPinDirection(EN,CONTROL_PORT,PIN_OUTPUT);
 	/*wait 30ms*/
 	_delay_ms(30);
-	
+
 	/*Send function send command*/
 	HCLCD_VidWriteCommand_8Bits(HCLCD_FUNCTION_SET);
 	_delay_ms(2);
-	
+
 	/*send Display ON/OFF Command*/
 	HCLCD_VidWriteCommand_8Bits(HCLCD_Display_On_Off);
 	_delay_ms(2);
-	
+
 	/* Send Clear Display Command*/
 	HCLCD_VidWriteCommand_8Bits(DISPLAY_CLEAR);
 	_delay_ms(2);
-	
+
 	/*Entry Mode Set Command*/
 	HCLCD_VidWriteCommand_8Bits(HCLCD_ENTRY_MODE_SET);
 	_delay_ms(2);
@@ -47,15 +47,15 @@ void HCLCD_Vid8Bits_Init(void)
 	 1  0 	D7  D6  D5  D4  D3  D2  D1  D0
 	--------------------------------------
 	Write data into internal RAM (DDRAM/CGRAM). Delay 43us
-**/
+ **/
 void HCLCD_VidWriteChar_8Bits(u8 Copy_u8Data)
 {
 	/*Select Command Register --> Write one on RS pin */
 	MDIO_Error_State_SetPinValue(RS,CONTROL_PORT,PIN_HIGH);
-	
+
 	/*Select write mode --> write zero on RW pin*/
 	MDIO_Error_State_SetPinValue(RW,CONTROL_PORT,PIN_LOW);
-	
+
 	/* Send data on port data */
 	MDIO_Error_State_SetPortValue(DATA_PORT, Copy_u8Data);
 
@@ -81,10 +81,10 @@ void HCLCD_VidWriteCommand_8Bits(u8 Copy_u8Command)
 {
 	/*Select Command Register --> Write zero on RS pin */
 	MDIO_Error_State_SetPinValue(RS,CONTROL_PORT,PIN_LOW);
-	
+
 	/*select write mode --> write zero on RW pin*/
 	MDIO_Error_State_SetPinValue(RW,CONTROL_PORT,PIN_LOW);
-	
+
 	/* Send command on port data */
 	MDIO_Error_State_SetPortValue(DATA_PORT, Copy_u8Command);
 
@@ -151,7 +151,7 @@ void HCLCD_VidWriteNumber_8Bits(u32 Copy_u32Number)
 	DB7 DB6 DB5 DB4 DB3 DB2 DB1 DB0
 	 1  AC6 AC5 AC4 AC3 AC2 AC1 AC0
 	Set DDRAM address in address Counter. Delay 39 s
-**/
+ **/
 void HCLCD_VidSetPosition_8Bits(u8 Copy_u8LineNumber, u8 Copy_u8PositionNumber)
 {
 	/* Check if first Line and in range of 16*/
@@ -181,35 +181,32 @@ void HCLCD_VidSetPosition_8Bits(u8 Copy_u8LineNumber, u8 Copy_u8PositionNumber)
 /**************************************/
 void HCLCD_vid4Bits_Init(void)
 {
-	/*LCD Data and Control Port Init*/
-	//MDIO_Error_State_SetPortDirection(DATA_PORT,PORT_OUTPUT);
-	/*Set Data Port as Output*/
-	MDIO_Error_State_SetPinDirection(HCLCD_DATA_PIN0,DATA_CONTROL_PORT_4BITS, PIN_OUTPUT);
-	MDIO_Error_State_SetPinDirection(HCLCD_DATA_PIN1,DATA_CONTROL_PORT_4BITS, PIN_OUTPUT);
-	MDIO_Error_State_SetPinDirection(HCLCD_DATA_PIN2,DATA_CONTROL_PORT_4BITS, PIN_OUTPUT);
-	MDIO_Error_State_SetPinDirection(HCLCD_DATA_PIN3,DATA_CONTROL_PORT_4BITS, PIN_OUTPUT);
+	/*Set Data pins as Output*/
+	MDIO_Error_State_SetPinDirection(HCLCD_DATA_PIN0, DATA_CONTROL_PORT_4BITS, PIN_OUTPUT);
+	MDIO_Error_State_SetPinDirection(HCLCD_DATA_PIN1, DATA_CONTROL_PORT_4BITS, PIN_OUTPUT);
+	MDIO_Error_State_SetPinDirection(HCLCD_DATA_PIN2, DATA_CONTROL_PORT_4BITS, PIN_OUTPUT);
+	MDIO_Error_State_SetPinDirection(HCLCD_DATA_PIN3, DATA_CONTROL_PORT_4BITS, PIN_OUTPUT);
 	/*Set RS as output*/
-	MDIO_Error_State_SetPinDirection(RS_4Bits,DATA_CONTROL_PORT_4BITS, PIN_OUTPUT);
-	/*Ignore RW pin*/
-	//MDIO_Error_State_SetPinDirection(RW,DATA_CONTROL_PORT_4BITS,PIN_OUTPUT);
+	MDIO_Error_State_SetPinDirection(RS_4Bits, DATA_CONTROL_PORT_4BITS, PIN_OUTPUT);
 	/*Set enable pin as output*/
-	MDIO_Error_State_SetPinDirection(EN_4Bits,DATA_CONTROL_PORT_4BITS,PIN_OUTPUT);
+	MDIO_Error_State_SetPinDirection(EN_4Bits, DATA_CONTROL_PORT_4BITS, PIN_OUTPUT);
 	/*wait 30ms*/
 	_delay_ms(30);
-	
-	
-	/*Send function set command*/
-	HCLCD_VidWriteCommand_4Bits(HCLCD_FUNCTION_SET);
+	MDIO_Error_State_SetPinValue(RS_4Bits , DATA_CONTROL_PORT_4BITS , PIN_LOW);
+	MDIO_Error_State_SetNibbleValue( HCLCD_DATA_PIN0, DATA_CONTROL_PORT_4BITS, ( FUNCTION_SET_4BITS_2LINES & 0xF0 ) >> ( 7-HCLCD_DATA_PIN3 ) );
+	MDIO_Error_State_SetPinValue(EN_4Bits,DATA_CONTROL_PORT_4BITS,PIN_HIGH);
 	_delay_ms(2);
-	
+	MDIO_Error_State_SetPinValue(EN_4Bits,DATA_CONTROL_PORT_4BITS,PIN_LOW);
+	_delay_ms(2);
+	/*Send function set command*/
+	HCLCD_VidWriteCommand_4Bits(FUNCTION_SET_4BITS_2LINES);
+	_delay_ms(2);
 	/*send Display ON/OFF Command*/
 	HCLCD_VidWriteCommand_4Bits(HCLCD_Display_On_Off);
 	_delay_ms(2);
-	
 	/* Send Clear Display Command*/
 	HCLCD_VidWriteCommand_4Bits(DISPLAY_CLEAR);
 	_delay_ms(2);
-	
 	/*Entry Mode Set Command*/
 	HCLCD_VidWriteCommand_4Bits(HCLCD_ENTRY_MODE_SET);
 	_delay_ms(2);
@@ -222,26 +219,27 @@ void HCLCD_VidWriteCommand_4Bits(u8 Copy_u8Command)
 {
 	/*Select Command Register --> Write zero on RS pin */
 	MDIO_Error_State_SetPinValue(RS_4Bits , DATA_CONTROL_PORT_4BITS , PIN_LOW);
-	
-	/*select write mode --> write zero on RW pin*/
-	//MDIO_Error_State_SetPinValue(RW,CONTROL_PORT,PIN_LOW);
-	
 	/* Send Most Significant Nibble command on port data */
-	MDIO_Error_State_SetNibbleValue( HCLCD_DATA_PIN0, DATA_CONTROL_PORT_4BITS, ( Copy_u8Command & 0xF0 ) >> ( 7-HCLCD_DATA_PIN3 ) );
-	
+	MDIO_Error_State_SetNibbleValue(HCLCD_DATA_PIN0, DATA_CONTROL_PORT_4BITS, (Copy_u8Command & 0xF0)>>(7-HCLCD_DATA_PIN3));
 	/* Enable **/
 	MDIO_Error_State_SetPinValue(EN_4Bits,DATA_CONTROL_PORT_4BITS,PIN_HIGH);
 	_delay_ms(2);
 	MDIO_Error_State_SetPinValue(EN_4Bits,DATA_CONTROL_PORT_4BITS,PIN_LOW);
-	
+	_delay_ms(2);
+	//MDIO_Error_State_SetPinValue(EN_4Bits,DATA_CONTROL_PORT_4BITS,PIN_HIGH);
+	//_delay_ms(2);
+
+	MDIO_Error_State_SetPinValue(RS_4Bits , DATA_CONTROL_PORT_4BITS , PIN_LOW);
+
 	/* Send Least Significant Nibble command on port data */
-	MDIO_Error_State_SetNibbleValue(HCLCD_DATA_PIN0, DATA_CONTROL_PORT_4BITS, ( Copy_u8Command & 0x0F ) << ( HCLCD_DATA_PIN0 ) );
- 
+	MDIO_Error_State_SetNibbleValue(HCLCD_DATA_PIN0, DATA_CONTROL_PORT_4BITS, (Copy_u8Command & 0x0F)<<(HCLCD_DATA_PIN0));
 	/* Set Enable High --> Low --> High */
 	MDIO_Error_State_SetPinValue(EN_4Bits,DATA_CONTROL_PORT_4BITS,PIN_HIGH);
 	_delay_ms(2);
 	MDIO_Error_State_SetPinValue(EN_4Bits,DATA_CONTROL_PORT_4BITS,PIN_LOW);
 	_delay_ms(2);
+	//MDIO_Error_State_SetPinValue(EN_4Bits,DATA_CONTROL_PORT_4BITS,PIN_HIGH);
+	//_delay_ms(2);
 }
 
 /******************************/
@@ -250,27 +248,26 @@ void HCLCD_VidWriteCommand_4Bits(u8 Copy_u8Command)
 void HCLCD_VidWriteChar_4Bits(u8 Copy_u8Data)
 {
 	/*Select Command Register --> Write zero on RS pin */
-	MDIO_Error_State_SetPinValue(RS_4Bits,DATA_CONTROL_PORT_4BITS,PIN_LOW);
-	
-	/*select write mode --> write zero on RW pin*/
-	//MDIO_Error_State_SetPinValue(RW,CONTROL_PORT,PIN_LOW);
-	
+	MDIO_Error_State_SetPinValue(RS_4Bits,DATA_CONTROL_PORT_4BITS,PIN_HIGH);
 	/* Send Most Significant Nibble command on port data */
 	MDIO_Error_State_SetNibbleValue( HCLCD_DATA_PIN0, DATA_CONTROL_PORT_4BITS, ( Copy_u8Data&0xF0 ) >> ( 7-HCLCD_DATA_PIN3 ) );
-	
 	/* Enable **/
 	MDIO_Error_State_SetPinValue(EN_4Bits,DATA_CONTROL_PORT_4BITS,PIN_HIGH);
 	_delay_ms(2);
 	MDIO_Error_State_SetPinValue(EN_4Bits,DATA_CONTROL_PORT_4BITS,PIN_LOW);
-	
+	_delay_ms(2);
+	//MDIO_Error_State_SetPinValue(EN_4Bits,DATA_CONTROL_PORT_4BITS,PIN_HIGH);
+	//_delay_ms(2);
+	MDIO_Error_State_SetPinValue(RS_4Bits , DATA_CONTROL_PORT_4BITS , PIN_HIGH);
 	/* Send Least Significant Nibble command on port data */
 	MDIO_Error_State_SetNibbleValue(HCLCD_DATA_PIN0, DATA_CONTROL_PORT_4BITS, ( Copy_u8Data&0x0F ) << ( HCLCD_DATA_PIN0 ));
-
 	/* Set Enable High --> Low --> High */
 	MDIO_Error_State_SetPinValue(EN_4Bits,DATA_CONTROL_PORT_4BITS,PIN_HIGH);
 	_delay_ms(2);
 	MDIO_Error_State_SetPinValue(EN_4Bits,DATA_CONTROL_PORT_4BITS,PIN_LOW);
 	_delay_ms(2);
+	//MDIO_Error_State_SetPinValue(EN_4Bits,DATA_CONTROL_PORT_4BITS,PIN_HIGH);
+	//_delay_ms(2);
 }
 
 /**********************************************/
@@ -290,7 +287,7 @@ void HCLCD_VidWriteString4Bits(u8* PCopy_u8String)
 /*************************************************/
 /** Write Multiple Number on LCD in 4-Bits Mode **/
 /*************************************************/
-void HCLCD_VidWriteNumber_4its(u32 Copy_u32Number)
+void HCLCD_VidWriteNumber_4Bits(u32 Copy_u32Number)
 {
 	/* Maximum Digits in u32 is 10 digits */
 	u8 LOC_u8ArrayReversedNumber[10];

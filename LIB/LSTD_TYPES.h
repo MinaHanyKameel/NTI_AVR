@@ -26,5 +26,15 @@ typedef float     f32;
 typedef double    f64;
 typedef long double f96;
 
+typedef enum{
+	BIT0=0,
+	BIT1,
+	BIT2,
+	BIT3,
+	BIT4,
+	BIT5,
+	BIT6,
+	BIT7
+}E_Bit_t;
 
 #endif 
